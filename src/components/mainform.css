@@ -1,0 +1,47 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 20px 1fr;
+  grid-template-rows: 150px 3fr;
+  gap: 10px;
+}
+
+span {
+  font-weight: bold;
+}
+
+.wrapper > * {
+  padding: 20px;
+}
+
+.inputs-col {
+  background-color: #e1c392;
+  box-shadow: 0 0 5px #e1c392;
+  border-radius: 20px 20px 0 0;
+  grid-column: 1/4;
+}
+
+.loaded-col {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1;
+  border-radius: 0 0 0 20px;
+  background-color: #e1c392;
+  box-shadow: 0 0 5px #e1c392;
+}
+.loaded-col img {
+  max-width: 100%;
+}
+
+.arrow {
+  grid-column: 2;
+  grid-row: 2;
+  padding: 0;
+  border: 7px dotted #e1c392;
+}
+
+.output-col {
+  grid-column: 3;
+  border-radius: 0 0 20px 0;
+  box-shadow: 0 0 5px #e1c392;
+  background-color: #e1c392;
+}
