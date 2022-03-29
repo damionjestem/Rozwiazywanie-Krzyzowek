@@ -1,22 +1,31 @@
 import React, { Component } from "react";
 import "./mainform.css";
+import { QuestionSet } from "./QuestionSet";
+import { uploadFileToBlob, getBlobsInContainer } from "./blobUpload";
+import { analyzeImage } from "./formRecognizer.js";
+//import readFile from "../computervision.js";
 
 class FileForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      num: 0,
       value: "",
       file: null,
     };
-
+    this.answers = [];
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.fileInput = React.createRef();
+    this.outputDebug = [];
   }
 
   handleNameChange(event) {
     this.setState({ value: event.target.value });
+    var q = new QuestionSet(this.state.value);
+    q.setQA();
+    this.answers = q.qaArray;
   }
 
   handleFileChange(event) {
@@ -26,7 +35,12 @@ class FileForm extends Component {
   }
 
   handleSubmit(event) {
-    alert(`submit has happenned: ${this.fileInput.current.files[0].name}`);
+    const fileUrl = uploadFileToBlob(this.fileInput.current.files[0]);
+    this.outputDebug.push({
+      blobs: fileUrl, //getBlobsInContainer(fileUrl),
+      message: `submit has happenned: ${this.fileInput.current.files[0].name}`,
+    });
+
     event.preventDefault();
   }
 
@@ -67,6 +81,24 @@ class FileForm extends Component {
         </div>
         <div className="output-col">
           <span>Output</span>
+          <ul>
+            {this.answers.map((value, index) => {
+              return (
+                <li>
+                  {value.question}: {value.answer}
+                </li>
+              );
+            })}
+          </ul>
+          <ul>
+            {this.outputDebug.map((value, index) => {
+              return (
+                <li>
+                  {index}: {value.blobs[value.blobs.length - 1]},{value.message}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     );

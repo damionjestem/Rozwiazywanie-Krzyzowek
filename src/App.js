@@ -25,7 +25,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Resolve every crossword you have</h1>
+          <h1>Rozwiąż każdą krzyżówkę...</h1>
         </header>
         <FileForm />
       </div>
