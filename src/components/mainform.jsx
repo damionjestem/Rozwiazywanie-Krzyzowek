@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./mainform.css";
 import { QuestionSet } from "./QuestionSet";
-import { uploadFileToBlob, getBlobsInContainer } from "./blobUpload";
+import { uploadFileToBlob } from "./blobUpload";
 import { analyzeImage } from "./formRecognizer.js";
 //import readFile from "../computervision.js";
 
@@ -37,9 +37,10 @@ class FileForm extends Component {
   handleSubmit(event) {
     const fileUrl = uploadFileToBlob(this.fileInput.current.files[0]);
     this.outputDebug.push({
-      blobs: fileUrl, //getBlobsInContainer(fileUrl),
+      blobs: fileUrl,
       message: `submit has happenned: ${this.fileInput.current.files[0].name}`,
     });
+    analyzeImage(fileUrl);
 
     event.preventDefault();
   }

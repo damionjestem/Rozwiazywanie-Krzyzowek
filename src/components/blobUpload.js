@@ -1,4 +1,4 @@
-import { BlobServiceClient, ContainerClient } from "@azure/storage-blob";
+import { BlobServiceClient } from "@azure/storage-blob";
 
 const sasToken = process.env.REACT_APP_STORAGESASTOKEN;
 const storageAccountName = "xwordblobstoragetest"; //process.env.REACT_APP_STORAGERESOURCENAME;
