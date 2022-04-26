@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@azure/ai-form-recognizer": "^4.0.0-beta.2",
+    "@azure/ai-form-recognizer": "^3.2.0",
     "@azure/cognitiveservices-computervision": "^8.2.0",
     "@azure/identity": "^2.0.4",
     "@azure/storage-blob": "^12.9.0",
@@ -21,10 +21,13 @@
     "mongoose": "^6.2.4",
     "node-core": "^1.0.6",
     "nodemon": "^2.0.15",
+    "parcel": "^2.4.0",
     "path": "^0.12.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-promise": "^3.0.2",
     "react-scripts": "5.0.0",
+    "react-use-promise": "^0.4.1",
     "util": "^0.12.4",
     "web-vitals": "^2.1.4"
   },

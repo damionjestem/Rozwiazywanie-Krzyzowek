@@ -9,13 +9,6 @@ export class QuestionSet {
    * @param {String[]} qArr - array of strings from one cell
    * @returns {String} nicely prepared question string
    */
-  prepareQ(rawText) {
-    var r = rawText.split("-");
-    r.forEach((q, i, arr) => {
-      arr[i] = q.trim();
-    });
-    return r.join("");
-  }
 
   setQA() {
     const q = this.prepareQ(this.text);
@@ -26,4 +19,12 @@ export class QuestionSet {
     };
     this.qaArray.push(qa);
   }
+}
+
+export function prepareQ(rawText) {
+  var r = rawText.split("-");
+  r.forEach((q, i, arr) => {
+    arr[i] = q.trim();
+  });
+  return r.join("");
 }

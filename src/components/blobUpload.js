@@ -1,8 +1,11 @@
 import { BlobServiceClient } from "@azure/storage-blob";
 
-const sasToken = process.env.REACT_APP_STORAGESASTOKEN;
-const storageAccountName = "xwordblobstoragetest"; //process.env.REACT_APP_STORAGERESOURCENAME;
-const containerName = `xsword-test1`;
+const sasToken =
+  "sv=2020-08-04&ss=bf&srt=sco&sp=rwdlacitfx&se=2022-08-31T03:08:09Z&st=2022-03-30T19:08:09Z&spr=https&sig=6TPVrwrEHtD58hWbQCF00Kk%2FixTMIbOvxzUIIB7sQCk%3D";
+const storageAccountName = "xword";
+const containerName = "crosswords";
+const blobSAS =
+  "sp=racwdl&st=2022-03-30T19:12:43Z&se=2022-08-31T03:12:43Z&spr=https&sv=2020-08-04&sr=c&sig=RnxNeDYr5d8xx3HzNtXu6JekcVRqVlX3GRl7Y3a1WGI%3D";
 
 // Feature flag - disable storage feature to app if not configured
 export const isStorageConfigured = () => {
@@ -17,7 +20,6 @@ export const getBlobsInContainer = async (containerClient) => {
       `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blob.name}`
     );
   }
-
   return returnedBlobUrls;
 };
 
@@ -35,12 +37,23 @@ export async function uploadFileToBlob(file) {
 
   // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
   const blobService = new BlobServiceClient(
-    `https://${storageAccountName}.blob.core.windows.net/?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2022-08-30T00:13:25Z&st=2022-03-29T16:13:25Z&spr=https&sig=TiJb8OAfRq0DGuzbB6Cc13sjKnBkIKLB%2BNa%2FjeTShBY%3D`
+    `https://${storageAccountName}.blob.core.windows.net/?${blobSAS}`
   );
 
-  // get Container - full public read access
   const containerClient = blobService.getContainerClient(containerName);
-  await containerClient.createIfNotExists();
+  //await containerClient.createIfNotExists();
+
+  const createContainer = async () => {
+    try {
+      console.log(`Creating container "${containerName}"...`);
+      await containerClient.create();
+      console.log(`Done.`);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  createContainer();
 
   // upload file
   await createBlobInContainer(containerClient, file);
