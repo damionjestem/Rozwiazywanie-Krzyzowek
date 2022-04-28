@@ -50,7 +50,7 @@ export async function recognizeContent(pictureUrl) {
       }
     }
   }
-  return result;
+  return await result;
 }
 /*
 export async function analyzeImage(fileUrl) {
