@@ -3,8 +3,6 @@ import {
   AzureKeyCredential,
 } from "@azure/ai-form-recognizer";
 
-import { prepareQ } from "./QuestionSet";
-
 const endpoint = "https://formrecognizerxword.cognitiveservices.azure.com/";
 const apiKey = "d711bf45cf6344ee9788cdfe669bf824";
 
@@ -33,14 +31,14 @@ export async function recognizeContent(pictureUrl) {
     );
     for (const table of page.tables) {
       for (const cell of table.cells) {
-        result.push({
-          pair: {
-            question: prepareQ(cell.text),
-            answer: "",
-          },
-          location: [cell.rowIndex, cell.columnIndex],
-        });
         if (cell.text) {
+          result.push({
+            pair: {
+              question: prepareQ(cell.text),
+              answer: "",
+            },
+            location: [cell.rowIndex, cell.columnIndex],
+          });
           console.log(
             `cell [${cell.rowIndex},${cell.columnIndex}] has text ${prepareQ(
               cell.text
@@ -52,57 +50,26 @@ export async function recognizeContent(pictureUrl) {
   }
   return await result;
 }
-/*
-export async function analyzeImage(fileUrl) {
-  const result = {};
 
-  const client = new DocumentAnalysisClient(
-    endpoint,
-    new AzureKeyCredential(apiKey)
-  );
-
-  const poller = await client.beginAnalyzeDocuments(
-    "prebuilt-document",
-    analyzeImage(fileUrl)
-  );
-
-  const { keyValuePairs, entities } = await poller.pollUntilDone();
-
-  if (keyValuePairs.length <= 0) {
-    result.msg = "No key-value pairs were extracted from the document.";
-    console.log("No key-value pairs were extracted from the document.");
-  } else {
-    console.log("Key-Value Pairs:");
-    result.pairs = [];
-    for (const { key, value, confidence } of keyValuePairs) {
-      result.pairs.push({
-        key: key,
-        question: value,
-        confidence: confidence,
-      });
-      console.log("- Key  :", `"${key.content}"`);
-      console.log(
-        "  Value:",
-        `"${value?.content ?? "<undefined>"}" (${confidence})`
-      );
-    }
-  }
-
-  if (entities.length <= 0) {
-    result.msg = "No entities were extracted from the document.";
-    console.log("No entities were extracted from the document.");
-  } else {
-    result.entities = [];
-    console.log("Entities:");
-    for (const entity of entities) {
-      result.entities.push(entity);
-      console.log(
-        `- "${entity.content}" ${entity.category} - ${
-          entity.subCategory ?? "<none>"
-        } (${entity.confidence})`
-      );
-    }
-  }
-  return result;
+function prepareQ(rawText) {
+  var r = rawText.split("-");
+  r.forEach((q, i, arr) => {
+    arr[i] = q.trim();
+  });
+  return r.join("");
 }
-*/
+/**
+ * Gets rid of hypens and unnecessary whitespaces and returns a string in one variable
+ * @param {String[]} qArr - array of strings from one cell
+ * @returns {String} nicely prepared question string
+ */
+
+function setQA() {
+  const q = this.prepareQ(this.text);
+  const a = "answer";
+  var qa = {
+    question: q,
+    answer: a,
+  };
+  this.qaArray.push(qa);
+}

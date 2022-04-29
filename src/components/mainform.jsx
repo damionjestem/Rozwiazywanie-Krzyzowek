@@ -22,6 +22,17 @@ class FileForm extends Component {
 
   async sendGET(event) {
     event.preventDefault();
+    console.log("GET");
+    let question = "prezent dla dziecka";
+    question = question.split(" ").join("+");
+    var requestURL = `http://cors-anywhere.herokuapp.com/https://krzyzowka.net/szukaj?h=&l=&d=${question}&t=1&p=0`;
+    try {
+      fetch(requestURL, { mode: "no-cors" })
+        .then((res) => res.json())
+        .then((json) => console.log(json.results));
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   handleFileChange(event) {
@@ -62,28 +73,6 @@ class FileForm extends Component {
     } catch (err) {
       console.error("The sample encountered an error:", err);
     }
-    // uploadFileToBlob(this.fileInput.current.files[0])
-    //   .then((array) => {
-    //     fileUrls = array;
-    //     tempArr = array.map((el) => {
-    //       el = el.split("/");
-    //       return el[el.length - 1];
-    //     });
-    //   })
-    //   .then(() => {
-    //     const id = tempArr.indexOf(fileName);
-    //     var ans = recognizeContent(fileUrls[id])
-    //       .catch((err) => {
-    //         console.error("The sample encountered an error:", err);
-    //       })
-    //       .then(() => {
-    //         console.log("ans", ans);
-    //         this.setState({
-    //           answers: turnPromiseToArray(ans),
-    //         });
-    //         console.log("this state answers", this.state.answers);
-    //       });
-    //   });
   }
 
   render() {
@@ -117,8 +106,7 @@ class FileForm extends Component {
             </div>
             <input type="submit" value="Przeanalizuj" />
           </form>
-          <form onSubmit={this.sendGET}></form>
-          <button>GET</button>
+          <button onClick={this.sendGET}>GET</button>
         </div>
         <div className="arrow"></div>
         <div className="loaded-col">
